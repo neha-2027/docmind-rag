@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DocuMind</title>
+<style>
+ body{font-family:system-ui,sans-serif;max-width:800px;margin:2rem auto;padding:0 1rem;color:#222}
+ input,textarea,button{font-size:1rem;padding:.5rem;margin:.2rem 0;width:100%;box-sizing:border-box}
+ button{width:auto;cursor:pointer}
+ .src{background:#f4f4f8;border-left:3px solid #88a;padding:.5rem;margin:.5rem 0;font-size:.9rem}
+ .err{color:#b00020}
+</style></head><body>
+<h1>DocuMind</h1>
+<p>Ask questions about your documents. Answers cite the passages they came from.</p>
+<input id="q" placeholder="e.g. What does a LEFT JOIN return?" maxlength="500">
+<button id="ask">Ask</button>
+<div id="out"></div>
+<details><summary>Add a document</summary>
+  <input id="name" placeholder="notes.md">
+  <textarea id="text" rows="6" placeholder="Paste text here"></textarea>
+  <button id="upload">Upload</button> <span id="upmsg"></span>
+</details>
+<script>
+const $ = id => document.getElementById(id);
+function el(tag, text, cls){ const e = document.createElement(tag); e.textContent = text; if (cls) e.className = cls; return e; }
+async function post(path, body){
+  const res = await fetch(path, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(body)});
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "request failed");
+  return data;
+}
+$("ask").onclick = async () => {
+  const out = $("out"); out.textContent = "";
+  try {
+    const r = await post("/ask", {question: $("q").value});
+    out.appendChild(el("h3", "Answer")); out.appendChild(el("p", r.answer));
+    r.sources.forEach(s => out.appendChild(el("div", "[" + s.ref + "] " + s.source + " (score " + s.score + "): " + s.snippet, "src")));
+  } catch (e) { out.appendChild(el("p", e.message, "err")); }
+};
+$("upload").onclick = async () => {
+  try { const r = await post("/documents", {name: $("name").value, text: $("text").value}); $("upmsg").textContent = "Saved. Total chunks: " + r.total_chunks; }
+  catch (e) { $("upmsg").textContent = e.message; }
+};
+</script></body></html>

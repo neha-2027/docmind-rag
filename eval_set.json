@@ -1,0 +1,14 @@
+[
+  {"question": "What does a LEFT JOIN return?", "expected_source": "sql_joins.md"},
+  {"question": "What is a foreign key?", "expected_source": "sql_joins.md"},
+  {"question": "What is the application factory pattern in Flask?", "expected_source": "flask_basics.md"},
+  {"question": "How do I read a JSON body in Flask?", "expected_source": "flask_basics.md"},
+  {"question": "What does the 404 status code mean?", "expected_source": "rest_api_design.md"},
+  {"question": "Difference between PUT and PATCH?", "expected_source": "rest_api_design.md"},
+  {"question": "How do I resolve a merge conflict?", "expected_source": "git_workflow.md"},
+  {"question": "What is a .gitignore file for?", "expected_source": "git_workflow.md"},
+  {"question": "What is Amazon S3 used for?", "expected_source": "aws_basics.md"},
+  {"question": "Why should applications use IAM roles?", "expected_source": "aws_basics.md"},
+  {"question": "How should API keys be passed to a container?", "expected_source": "docker_basics.md"},
+  {"question": "What does the -p flag do in docker run?", "expected_source": "docker_basics.md"}
+]
